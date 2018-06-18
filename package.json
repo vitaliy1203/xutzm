@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start": "webpack --watch",
+    "serv": "static build"
+  },
+  "devDependencies": {
+    "webpack": "^4.12.0"
+  }
+}
