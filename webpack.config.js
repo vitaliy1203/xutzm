@@ -6,6 +6,7 @@ const devserver = require('./webpack/devserver.js');
 const sass = require('./webpack/sass.js');
 const css = require('./webpack/css.js');
 const extractCSS = require('./webpack/css.extract');
+const webpack = require('webpack');
 
 const PATHS = {
     source: path.join(__dirname, 'source'),
@@ -22,15 +23,32 @@ const common = merge([
             path: PATHS.build,
             filename: '[name].js'
         },
+
+        optimization: {
+            minimize: false,
+            runtimeChunk: {name: 'common'},
+            splitChunks: {
+                cacheGroups: {
+                    default: false,
+                    commons: {
+                        chunks: 'all',
+                        minChunks: 2,
+                        name: 'common',
+                        enforce: true
+                    }
+                }
+            }
+        },
+
         plugins: [
             new HtmlWebpackPlugin({
                 filename: 'index.html',
-                chunks: ['index'],
+                chunks: ['index', 'common'],
                 template: PATHS.source + '/pages/index/index.pug'
             }),
             new HtmlWebpackPlugin({
                 filename: 'blog.html',
-                chunks: ['blog'],
+                chunks: ['blog', 'common'],
                 template: PATHS.source + '/pages/blog/blog.pug'
             })
         ]
