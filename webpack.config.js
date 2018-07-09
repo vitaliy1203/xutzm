@@ -7,6 +7,7 @@ const sass = require('./webpack/sass.js');
 const css = require('./webpack/css.js');
 const extractCSS = require('./webpack/css.extract');
 const webpack = require('webpack');
+const images = require('./webpack/images.js');
 
 const PATHS = {
     source: path.join(__dirname, 'source'),
@@ -15,7 +16,7 @@ const PATHS = {
 
 const optimization = {
         optimization: {
-            minimize: false,
+            minimize: true,
             runtimeChunk: {name: 'common'},
             splitChunks: {
                 cacheGroups: {
@@ -59,7 +60,8 @@ const common = merge([
             })
         ]
     },
-    pug()
+    pug(),
+    images()
 ]);
 
 module.exports = (env, argv) => {
