@@ -13,17 +13,7 @@ const PATHS = {
     build: path.join(__dirname, 'build')
 };
 
-const common = merge([
-    {
-        entry: {
-            'index': PATHS.source + '/pages/index/index.js',
-            'blog': PATHS.source + '/pages/blog/blog.js'
-        },
-        output: {
-            path: PATHS.build,
-            filename: '[name].js'
-        },
-
+const optimization = {
         optimization: {
             minimize: false,
             runtimeChunk: {name: 'common'},
@@ -38,7 +28,19 @@ const common = merge([
                     }
                 }
             }
+        }
+};
+const common = merge([
+    {
+        entry: {
+            'index': PATHS.source + '/pages/index/index.js',
+            'blog': PATHS.source + '/pages/blog/blog.js'
         },
+        output: {
+            path: PATHS.build,
+            filename: '[name].js'
+        },
+
 
         plugins: [
             new HtmlWebpackPlugin({
@@ -50,22 +52,27 @@ const common = merge([
                 filename: 'blog.html',
                 chunks: ['blog', 'common'],
                 template: PATHS.source + '/pages/blog/blog.pug'
+            }),
+          new webpack.ProvidePlugin({
+                $: 'jquery',
+                jQuery: 'jquery'
             })
         ]
     },
     pug()
 ]);
 
-module.exports = function (env) {
-    if (env === 'production') {
+module.exports = (env, argv) => {
+    if (argv.mode === 'production') {
         return merge([
             common,
             extractCSS()
         ]);
     }
-    if (env === 'development') {
+    if (argv.mode === 'development') {
         return merge([
             common,
+            optimization,
             devserver(),
             sass(),
             css()
