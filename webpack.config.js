@@ -9,6 +9,7 @@ const extractCSS = require('./webpack/css.extract');
 const webpack = require('webpack');
 const images = require('./webpack/images.js');
 
+
 const PATHS = {
     source: path.join(__dirname, 'source'),
     build: path.join(__dirname, 'build')
@@ -36,6 +37,7 @@ const common = merge([
         entry: {
             'index': PATHS.source + '/pages/index/index.js',
             'blog': PATHS.source + '/pages/blog/blog.js'
+
         },
         output: {
             path: PATHS.build,
